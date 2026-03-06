@@ -1,10 +1,10 @@
-# 🗄️ ShelfAPI
+# ShelfAPI
 
 API REST completa de **produtos** (CRUD) construída com **ASP.NET Core 8**, **Entity Framework Core** e **SQLite**.
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 | Feature                    | Detalhes                                  |
 | -------------------------- | ----------------------------------------- |
@@ -18,7 +18,7 @@ API REST completa de **produtos** (CRUD) construída com **ASP.NET Core 8**, **E
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 ShelfAPI/
@@ -38,14 +38,14 @@ ShelfAPI/
 
 ---
 
-## ⚙️ Pré-requisitos
+## Pré-requisitos
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - (Opcional) [EF Core CLI](https://learn.microsoft.com/ef/core/cli/dotnet) — `dotnet tool install --global dotnet-ef`
 
 ---
 
-## 🏃 Como Rodar
+## Como Rodar
 
 ```bash
 # 1. Clone o repositório
@@ -64,7 +64,7 @@ O Swagger UI estará acessível na **raiz** (`/`).
 
 ---
 
-## 📡 Endpoints
+## Endpoints
 
 | Método   | Rota                 | Descrição               |
 | -------- | -------------------- | ----------------------- |
@@ -103,7 +103,7 @@ curl -X POST https://localhost:5001/api/products \
 
 ---
 
-## 🗃️ Banco de Dados
+## Banco de Dados
 
 O SQLite é usado por padrão. O arquivo `shelf.db` é criado automaticamente na raiz do projeto ao iniciar a aplicação (migrations automáticas).
 
@@ -132,7 +132,7 @@ dotnet ef migrations remove
 
 ---
 
-## 🚢 Deploy
+## Deploy
 
 ### Docker (opcional)
 
@@ -167,6 +167,6 @@ az webapp deploy --resource-group MeuGrupo --name shelf-api --src-path ./publish
 
 ---
 
-## 📄 Licença
+## Licença
 
 MIT
