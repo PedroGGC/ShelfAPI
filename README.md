@@ -169,4 +169,5 @@ az webapp deploy --resource-group MeuGrupo --name shelf-api --src-path ./publish
 
 ## Licença
 
-MIT
+![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
+
