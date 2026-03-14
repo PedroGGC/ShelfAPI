@@ -1,113 +1,100 @@
-# ShelfAPI
+# ShelfAPI 📦
 
-API REST completa de **produtos** (CRUD) construída com **ASP.NET Core 8**, **Entity Framework Core** e **SQLite**.
-
----
-
-## Funcionalidades
-
-| Feature                    | Detalhes                                  |
-| -------------------------- | ----------------------------------------- |
-| **CRUD completo**          | GET, POST, PUT, DELETE em `/api/products` |
-| **Entity Framework Core**  | ORM com SQLite                            |
-| **Data Annotations**       | Validação automática nos DTOs             |
-| **DTOs**                   | Request/Response separados do modelo      |
-| **Swagger/OpenAPI**        | Documentação interativa na raiz `/`       |
-| **Migrations automáticas** | Banco criado ao iniciar a app             |
-| **CORS habilitado**        | Aceita qualquer origem em dev             |
+API REST de **gerenciamento de produtos** com CRUD completo, construída com ASP.NET Core 8, Entity Framework Core e SQLite.
 
 ---
 
-## Estrutura do Projeto
+## ⚡ Início Rápido
 
-```
-ShelfAPI/
-├── Controllers/
-│   └── ProductsController.cs    # Endpoints CRUD
-├── Data/
-│   └── AppDbContext.cs           # Contexto do EF Core
-├── DTOs/
-│   └── ProductDto.cs             # Request e Response DTOs
-├── Models/
-│   └── Product.cs                # Entidade Product
-├── Migrations/                   # Migrations geradas pelo EF Core
-├── Program.cs                    # Configuração da aplicação
-├── appsettings.json              # Connection string + logging
-└── ShelfAPI.csproj               # Dependências do projeto
-```
-
----
-
-## Pré-requisitos
-
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- (Opcional) [EF Core CLI](https://learn.microsoft.com/ef/core/cli/dotnet) — `dotnet tool install --global dotnet-ef`
-
----
-
-## Como Rodar
+**Pré-requisito:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/seu-usuario/ShelfAPI.git
 cd ShelfAPI
-
-# 2. Restaure os pacotes
-dotnet restore
-
-# 3. Execute a aplicação
 dotnet run
 ```
 
-A API estará disponível em **https://localhost:5001** (ou **http://localhost:5000**).
-O Swagger UI estará acessível na **raiz** (`/`).
+Pronto! A API sobe em **http://localhost:5003** e o **Swagger UI** abre automaticamente na raiz — acesse [`http://localhost:5003`](http://localhost:5003) no browser para explorar e testar os endpoints visualmente.
+
+> O banco de dados SQLite (`shelf.db`) é criado automaticamente. Não é necessário rodar nenhum comando de migração.
 
 ---
 
-## Endpoints
+## 🛣️ Endpoints
 
-| Método   | Rota                 | Descrição               |
-| -------- | -------------------- | ----------------------- |
-| `GET`    | `/api/products`      | Lista todos os produtos |
-| `GET`    | `/api/products/{id}` | Busca produto por ID    |
-| `POST`   | `/api/products`      | Cria um novo produto    |
-| `PUT`    | `/api/products/{id}` | Atualiza um produto     |
-| `DELETE` | `/api/products/{id}` | Deleta um produto       |
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `GET` | `/api/products` | Lista todos os produtos |
+| `GET` | `/api/products/{id}` | Busca produto por ID |
+| `POST` | `/api/products` | Cria um novo produto |
+| `PUT` | `/api/products/{id}` | Atualiza um produto |
+| `DELETE` | `/api/products/{id}` | Deleta um produto |
 
-### Exemplo — Criar Produto
+---
 
+## 📋 Modelo de Produto
+
+| Campo | Tipo | Regras |
+|-------|------|--------|
+| `id` | int | Auto-gerado |
+| `name` | string | Obrigatório · 2–150 caracteres |
+| `description` | string? | Opcional · máx. 500 caracteres |
+| `price` | decimal | Obrigatório · entre R$ 0,01 e R$ 999.999,99 |
+| `stock` | int | Obrigatório · valor ≥ 0 |
+| `createdAt` | DateTime | Gerado automaticamente |
+| `updatedAt` | DateTime? | Atualizado nos PUTs |
+
+---
+
+## 🧪 Exemplos de Uso
+
+### Criar produto
 ```bash
-curl -X POST https://localhost:5001/api/products \
+curl -X POST http://localhost:5003/api/products \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Teclado Mecânico",
-    "description": "Teclado mecânico RGB com switches blue",
+    "description": "RGB com switches blue",
     "price": 349.90,
     "stock": 50
   }'
 ```
 
-**Resposta (201 Created):**
-
+**Resposta 201 Created:**
 ```json
 {
   "id": 1,
   "name": "Teclado Mecânico",
-  "description": "Teclado mecânico RGB com switches blue",
-  "price": 349.9,
+  "description": "RGB com switches blue",
+  "price": 349.90,
   "stock": 50,
-  "createdAt": "2026-03-06T19:16:00Z",
+  "createdAt": "2026-03-14T16:32:00Z",
   "updatedAt": null
 }
 ```
 
+### Listar todos os produtos
+```bash
+curl http://localhost:5003/api/products
+```
+
+### Atualizar produto
+```bash
+curl -X PUT http://localhost:5003/api/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Teclado Mecânico Pro", "price": 499.90, "stock": 30}'
+```
+
+### Deletar produto
+```bash
+curl -X DELETE http://localhost:5003/api/products/1
+```
+
 ---
 
-## Banco de Dados
+## ⚙️ Configuração
 
-O SQLite é usado por padrão. O arquivo `shelf.db` é criado automaticamente na raiz do projeto ao iniciar a aplicação (migrations automáticas).
-
-Para alterar a connection string, edite o `appsettings.json`:
+A connection string do banco fica em `appsettings.json`:
 
 ```json
 {
@@ -117,24 +104,21 @@ Para alterar a connection string, edite o `appsettings.json`:
 }
 ```
 
-### Comandos de Migração
+Para usar outro banco (ex: PostgreSQL), troque o provider no `Program.cs` e atualize a connection string.
+
+### Migrations (opcional)
+
+As migrations são aplicadas automaticamente ao iniciar a app. Se precisar gerenciá-las manualmente:
 
 ```bash
-# Criar uma nova migração
-dotnet ef migrations add NomeDaMigracao
-
-# Aplicar migrations manualmente
-dotnet ef database update
-
-# Reverter a última migração
-dotnet ef migrations remove
+dotnet ef migrations add NomeDaMigracao   # criar migração
+dotnet ef database update                  # aplicar
+dotnet ef migrations remove                # reverter última
 ```
 
 ---
 
-## Deploy
-
-### Docker (opcional)
+## 🐳 Deploy com Docker
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
@@ -158,16 +142,21 @@ docker build -t shelfapi .
 docker run -p 8080:8080 shelfapi
 ```
 
-### Azure App Service
+---
 
-```bash
-dotnet publish -c Release -o ./publish
-az webapp deploy --resource-group MeuGrupo --name shelf-api --src-path ./publish
+## 🗂️ Estrutura do Projeto
+
+```
+ShelfAPI/
+├── Program.cs           # Configuração da app + todos os endpoints
+├── Models.cs            # Entidade Product, DTOs e AppDbContext
+├── Migrations/          # Migrations do EF Core (auto-geradas)
+├── appsettings.json     # Connection string e logging
+└── ShelfAPI.csproj      # Dependências do projeto
 ```
 
 ---
 
 ## Licença
 
-![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
-
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
